@@ -1,0 +1,40 @@
+﻿@model PersonCSV.ViewModels.PersonModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<form method="POST" action="/Persons/Edit">
+    <div class="form-group row">
+        <input type="number" name="Identity" hidden class="form-control-plaintext" value="@Model.Identity">
+
+        <label for="firstName" class="col-sm-2 col-form-label">First Name</label>
+        <div class="col-sm-10">
+            <input type="text" name="FirstName" class="form-control-plaintext" value="@Model.FirstName">
+        </div>
+        <label for="surName" class="col-sm-2 col-form-label">Surname </label>
+        <div class="col-sm-10">
+            <input type="text" name="Surname" class="form-control-plaintext" value="@Model.Surname">
+        </div>
+        <label for="Age" class="col-sm-2 col-form-label">Age </label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control-plaintext" name="Age" value="@Model.Age">
+        </div>
+        <label for="Sex" class="col-sm-2 col-form-label">Sex </label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control-plaintext" name="Sex" value="@Model.Sex">
+        </div>
+        <label for="Mobile" class="col-sm-2 col-form-label">Mobile </label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control-plaintext" name="Mobile" value="@Model.Mobile">
+        </div>
+        <label for="Active" class="col-sm-2 col-form-label">Active : @Model.Active </label>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="Active" checked="" value=true >
+        </div>
+
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button> &nbsp; <a href="/Persons/Index">Back</a>
+</form>

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<PersonCSV.ViewModels.PersonModel>
+
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Identity</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Surname </th>
+            <th scope="col">Age </th>
+            <th scope="col">Sex </th>
+            <th scope="col">Mobile </th>
+            <th scope="col">Active </th>
+            <th scope="col">Action </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in Model)
+        {
+        <tr class="table-active">
+            <th scope="row">@person.Identity</th>
+            <td>@person.FirstName</td>
+            <td>@person.Surname</td>
+            <td>@person.Age</td>
+            <td>@person.Sex </td>
+            <td>@person.Mobile </td>
+            <td>@person.Active </td>
+
+            <td>
+                <a href="/Persons/Edit/@person.Identity" id="edit">Edit</a>
+                <a href="" id="delete" onClick="DeleteById(@person.Identity);">Delete</a>
+
+            </td>
+
+        </tr>
+        }
+    </tbody>
+</table>
+

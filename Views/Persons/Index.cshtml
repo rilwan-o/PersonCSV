@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Upload CV </h2>
+<hr />
+
+<div class="form-group">
+    <label for="formFile" class="form-label mt-4">Upload File</label>
+    <input class="form-control" type="file" id="FileUpload1" accept=".csv">
+    <button type="button" class="btn btn-primary" id="btnUpload">Upload</button>
+    <small id="emailHelp" class="form-text text-muted">csv file only</small>
+
+</div>
+
+<!--Div to show table Data-->
+<div id="TableData"></div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+
+        //Get Table data on page load
+        $.ajax({
+            url: '/Persons/PersonsTable', //url to load table data
+            type: 'GET',
+            success: function (result) {
+                //Get result data in html and append it in the div
+                $("#TableData").html(result);
+            }
+
+        })
+
+
+        //Submit Data on Click
+        $("#btnUpload").on('click', function () {
+            //do validation here for data if needed.
+
+            // Checking whether FormData is available in browser
+            if (window.FormData !== undefined) {
+
+                var fileUpload = $("#FileUpload1").get(0);
+                var files = fileUpload.files;
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                // Adding one more key to FormData object
+                //fileData.append('username', ‘Manas’);
+
+                $.ajax({
+                    url: '/Persons/UploadFiles',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (result) {
+                        alert(result.Message);
+                        if (result.Status) {
+                            //Get Updated data from table
+                            $.ajax({
+                                url: '/Persons/PersonsTable', //url to load table data
+                                type: 'GET',
+                                success: function (result) {
+                                    //replace it with new data
+                                    $("#TableData").html(result);
+                                },
+                                error: function () {
+                                    //Show error here
+                                    alert("Error Loading table data");
+                                }
+
+                            })
+                        }
+
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("FormData is not supported.");
+            }
+
+        })
+    });   
+
+    function DeleteById(id) {
+        if (confirm("Are you sure you want delete this item?")) {
+            $.ajax({
+                url: "/Persons/DeleteItem/" + id,
+                type: "GET",
+                success: function (result) {
+                    if (result.status) {
+                        //Get Updated data from table
+                        $.ajax({
+                            url: '/Persons/PersonsTable', //url to load table data
+                            type: 'GET',
+                            success: function (result) {
+                                //replace it with new data
+                                $("#TableData").html(result);
+                            },
+                            error: function () {
+                                //Show error here
+                                alert("Unable to send request at this time");
+                            }
+
+                        })
+                    }
+                   
+                }
+
+            });
+        } 
+        
+    }
+</script>
